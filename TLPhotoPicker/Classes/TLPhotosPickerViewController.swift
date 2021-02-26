@@ -136,7 +136,7 @@ open class TLPhotosPickerViewController: UIViewController {
     @IBOutlet open var subTitleLabel: UILabel!
     @IBOutlet open var subTitleArrowImageView: UIImageView!
     @IBOutlet open var albumPopView: TLAlbumPopView!
-    @IBOutlet open var collectionView: UICollectionView!
+    @IBOutlet open var collectionView: SwipeSelectingCollectionView!
     @IBOutlet open var indicator: UIActivityIndicatorView!
     @IBOutlet open var popArrowImageView: UIImageView!
     @IBOutlet open var customNavItem: UINavigationItem!
@@ -209,6 +209,7 @@ open class TLPhotosPickerViewController: UIViewController {
     }
     
     public init() {
+        print("here")
         super.init(nibName: "TLPhotosPickerViewController", bundle: TLBundle.bundle())
     }
     
@@ -950,7 +951,7 @@ extension TLPhotosPickerViewController: UICollectionViewDelegate,UICollectionVie
             selectCameraCell(cell)
             return
         }
-        
+      
         toggleSelection(for: cell, at: indexPath)
     }
     
@@ -1282,6 +1283,7 @@ extension TLPhotosPickerViewController {
             if playRequestID?.indexPath == indexPath {
                 stopPlay()
             }
+
         } else {
         //select
             logDelegate?.selectedPhoto(picker: self, at: indexPath.row)
