@@ -13,7 +13,7 @@ public class SwipeSelectingCollectionView: UICollectionView {
     private var beginIndexPath: IndexPath?
     private var selectingRange: ClosedRange<IndexPath>?
     private var selectingMode: SelectingMode = .selecting
-    public var selectingIndexPaths = Set<IndexPath>()
+    private var selectingIndexPaths = Set<IndexPath>()
     private var autoScrollOperationQueue = OperationQueue.main
     private var isAutoStartScroll = false
     private var autoScrollSpeed: CGFloat = 20
@@ -163,11 +163,11 @@ public class SwipeSelectingCollectionView: UICollectionView {
     private func setSelection(_ selected: Bool, indexPath: IndexPath) {
         switch selected {
         case true:
-            delegate?.collectionView?(self, didSelectItemAt: indexPath)
             selectItem(at: indexPath, animated: false, scrollPosition: [])
+            delegate?.collectionView?(self, didSelectItemAt: indexPath)
         case false:
-            delegate?.collectionView?(self, didDeselectItemAt: indexPath)
             deselectItem(at: indexPath, animated: false)
+            delegate?.collectionView?(self, didDeselectItemAt: indexPath)
         }
     }
 
