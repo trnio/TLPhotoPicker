@@ -444,6 +444,18 @@ extension TLPhotosPickerViewController {
         updatePresentLimitedLibraryButton()
     }
     
+    private func updateTitleWithCount() {
+        if let title = self.focusedCollection?.title,
+           let count = collectionView.indexPathsForSelectedItems?.count{
+            if count > 0 {
+                titleLabel.text = "\(title)(\(count))"
+            }
+            else {
+                titleLabel.text = title
+            }
+        }
+    }
+    
     private func reloadCollectionView() {
         guard self.focusedCollection != nil else {
             return
@@ -952,7 +964,13 @@ extension TLPhotosPickerViewController: UICollectionViewDelegate,UICollectionVie
             return
         }
       
+        updateTitleWithCount()
+        
         toggleSelection(for: cell, at: indexPath)
+    }
+
+    open func collectionView(_ collectionView: UICollectionView, didDeselectItemAt indexPath: IndexPath) {
+        updateTitleWithCount()
     }
     
     open func collectionView(_ collectionView: UICollectionView, didEndDisplaying cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
