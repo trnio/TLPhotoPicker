@@ -82,7 +82,6 @@ public class SwipeSelectingCollectionView: UICollectionView {
     private func handleChangeOf(gestureRecognizer: UIPanGestureRecognizer) {
         let scrollBoundary: CGFloat = 80
         let point = gestureRecognizer.location(in: self)
-        print(point.y - self.contentOffset.y)
         if point.y - self.contentOffset.y >= self.bounds.size.height - scrollBoundary, autoScrollOperationQueue.operationCount == 0 {
             autoScrollDirection = .down
             isAutoStartScroll = true
