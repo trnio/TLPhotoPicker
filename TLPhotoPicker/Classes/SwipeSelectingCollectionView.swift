@@ -13,7 +13,7 @@ public class SwipeSelectingCollectionView: UICollectionView {
     private var beginIndexPath: IndexPath?
     private var selectingRange: ClosedRange<IndexPath>?
     private var selectingMode: SelectingMode = .selecting
-    private var selectingIndexPaths = Set<IndexPath>()
+    public var selectingIndexPaths = Set<IndexPath>()
     private var autoScrollOperationQueue = OperationQueue.main
     private var isAutoStartScroll = false
     private var autoScrollSpeed: CGFloat = 20
