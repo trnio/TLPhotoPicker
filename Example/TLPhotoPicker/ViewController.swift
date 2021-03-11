@@ -18,6 +18,7 @@ class ViewController: UIViewController,TLPhotosPickerViewControllerDelegate {
     
     @IBAction func myCustom() {
         let viewController = SelectManyViewController()
+        
         viewController.delegate = self
         viewController.didExceedMaximumNumberOfSelection = { [weak self] (picker) in
             self?.showExceededMaximumAlert(vc: picker)

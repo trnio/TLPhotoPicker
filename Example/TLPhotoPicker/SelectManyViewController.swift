@@ -5,6 +5,7 @@ class SelectManyViewController: TLPhotosPickerViewController {
     override func makeUI() {
         super.makeUI()
         self.customNavItem.leftBarButtonItem = UIBarButtonItem.init(barButtonSystemItem: .stop, target: nil, action: #selector(customAction))
+        
     }
     @objc func customAction() {
         self.delegate?.photoPickerDidCancel()
