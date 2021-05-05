@@ -11,7 +11,7 @@ import Photos
 import PhotosUI
 import MobileCoreServices
 
-public protocol TLPhotosPickerViewControllerDelegate: class {
+public protocol TLPhotosPickerViewControllerDelegate: AnyObject {
     func dismissPhotoPicker(withPHAssets: [PHAsset])
     func dismissPhotoPicker(withTLPHAssets: [TLPHAsset])
     func shouldDismissPhotoPicker(withTLPHAssets: [TLPHAsset]) -> Bool
@@ -37,7 +37,7 @@ extension TLPhotosPickerViewControllerDelegate {
 }
 
 //for log
-public protocol TLPhotosPickerLogDelegate: class {
+public protocol TLPhotosPickerLogDelegate: AnyObject {
     func selectedCameraCell(picker: TLPhotosPickerViewController)
     func deselectedPhoto(picker: TLPhotosPickerViewController, at: Int)
     func selectedPhoto(picker: TLPhotosPickerViewController, at: Int)
@@ -445,8 +445,8 @@ extension TLPhotosPickerViewController {
     }
     
     private func updateTitleWithCount() {
-        if let title = self.focusedCollection?.title,
-           let count = collectionView.indexPathsForSelectedItems?.count{
+        if let title = self.focusedCollection?.title {
+            let count = selectedAssets.count
             if count > 0 {
                 titleLabel.text = "\(title)(\(count))"
             }
@@ -970,7 +970,10 @@ extension TLPhotosPickerViewController: UICollectionViewDelegate,UICollectionVie
     }
 
     open func collectionView(_ collectionView: UICollectionView, didDeselectItemAt indexPath: IndexPath) {
+        guard let collection = self.focusedCollection, let cell = self.collectionView.cellForItem(at: indexPath) as? TLPhotoCollectionViewCell else { return }
+        
         updateTitleWithCount()
+        toggleSelection(for: cell, at: indexPath)
     }
     
     open func collectionView(_ collectionView: UICollectionView, didEndDisplaying cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
