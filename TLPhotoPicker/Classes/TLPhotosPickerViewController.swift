@@ -964,16 +964,15 @@ extension TLPhotosPickerViewController: UICollectionViewDelegate,UICollectionVie
             return
         }
       
-        updateTitleWithCount()
-        
         toggleSelection(for: cell, at: indexPath)
+        updateTitleWithCount()
     }
 
     open func collectionView(_ collectionView: UICollectionView, didDeselectItemAt indexPath: IndexPath) {
         guard let collection = self.focusedCollection, let cell = self.collectionView.cellForItem(at: indexPath) as? TLPhotoCollectionViewCell else { return }
         
-        updateTitleWithCount()
         toggleSelection(for: cell, at: indexPath)
+        updateTitleWithCount()
     }
     
     open func collectionView(_ collectionView: UICollectionView, didEndDisplaying cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
