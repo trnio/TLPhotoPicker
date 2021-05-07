@@ -16,7 +16,7 @@ public class SwipeSelectingCollectionView: UICollectionView {
     private var selectingIndexPaths = Set<IndexPath>()
     private var autoScrollOperationQueue = OperationQueue.main
     private var isAutoStartScroll = false
-    private var autoScrollSpeed: CGFloat = 20
+    private var autoScrollSpeed: CGFloat = 5
     private var autoScrollDirection: AutoScrollDirection?
     private enum AutoScrollDirection {
         case up, down
