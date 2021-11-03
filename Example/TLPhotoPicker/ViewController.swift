@@ -16,25 +16,6 @@ class ViewController: UIViewController,TLPhotosPickerViewControllerDelegate {
     @IBOutlet var label: UILabel!
     @IBOutlet var imageView: UIImageView!
     
-    @IBAction func myCustom() {
-        let viewController = SelectManyViewController()
-        
-        viewController.delegate = self
-        viewController.didExceedMaximumNumberOfSelection = { [weak self] (picker) in
-            self?.showExceededMaximumAlert(vc: picker)
-        }
-        var configure = TLPhotosPickerConfigure()
-        configure.numberOfColumn = 3
-        viewController.configure = configure
-        viewController.selectedAssets = self.selectedAssets
-        viewController.logDelegate = self
-        configure.nibSet = (nibName: "ImageCell", bundle: Bundle.main)
-        viewController.configure = configure
-
-        viewController.modalPresentationStyle = .fullScreen
-        self.present(viewController, animated: true, completion: nil)
-    }
-    
     @IBAction func pickerButtonTap() {
         let viewController = CustomPhotoPickerViewController()
         viewController.delegate = self
@@ -47,7 +28,6 @@ class ViewController: UIViewController,TLPhotosPickerViewControllerDelegate {
         viewController.selectedAssets = self.selectedAssets
         viewController.logDelegate = self
 
-        viewController.modalPresentationStyle = .fullScreen
         self.present(viewController, animated: true, completion: nil)
     }
     
@@ -131,7 +111,6 @@ class ViewController: UIViewController,TLPhotosPickerViewControllerDelegate {
         viewController.configure = configure
         viewController.selectedAssets = self.selectedAssets
         
-        viewController.modalPresentationStyle = .fullScreen
         self.present(viewController.wrapNavigationControllerWithoutBar(), animated: true, completion: nil)
     }
     

@@ -136,7 +136,7 @@ open class TLPhotosPickerViewController: UIViewController {
     @IBOutlet open var subTitleLabel: UILabel!
     @IBOutlet open var subTitleArrowImageView: UIImageView!
     @IBOutlet open var albumPopView: TLAlbumPopView!
-    @IBOutlet open var collectionView: SwipeSelectingCollectionView!
+    @IBOutlet open var collectionView: UICollectionView!
     @IBOutlet open var indicator: UIActivityIndicatorView!
     @IBOutlet open var popArrowImageView: UIImageView!
     @IBOutlet open var customNavItem: UINavigationItem!
@@ -209,7 +209,6 @@ open class TLPhotosPickerViewController: UIViewController {
     }
     
     public init() {
-        print("here")
         super.init(nibName: "TLPhotosPickerViewController", bundle: TLBundle.bundle())
     }
     
@@ -389,6 +388,7 @@ extension TLPhotosPickerViewController {
         let width = floor((self.view.frame.size.width-(5*(count-1)))/count)
         self.thumbnailSize = CGSize(width: width, height: width)
         layout.itemSize = self.thumbnailSize
+        layout.minimumInteritemSpacing = 0
         self.collectionView.collectionViewLayout = layout
         self.placeholderThumbnail = centerAtRect(image: self.configure.placeholderIcon, rect: CGRect(x: 0, y: 0, width: width, height: width))
         self.cameraImage = centerAtRect(image: self.configure.cameraIcon, rect: CGRect(x: 0, y: 0, width: width, height: width), bgColor: self.configure.cameraBgColor)
@@ -444,7 +444,7 @@ extension TLPhotosPickerViewController {
         updatePresentLimitedLibraryButton()
     }
     
-    private func updateTitleWithCount() {
+        private func updateTitleWithCount() {
         if let title = self.focusedCollection?.title {
             let count = selectedAssets.count
             if count > 0 {
@@ -455,7 +455,7 @@ extension TLPhotosPickerViewController {
             }
         }
     }
-    
+
     private func reloadCollectionView() {
         guard self.focusedCollection != nil else {
             return
@@ -661,6 +661,14 @@ extension TLPhotosPickerViewController: UIImagePickerControllerDelegate, UINavig
         picker.mediaTypes = mediaTypes
         picker.allowsEditing = false
         picker.delegate = self
+        
+        // if user is on ipad using split view controller, present picker as popover
+        if UIDevice.current.userInterfaceIdiom == .pad {
+            picker.modalPresentationStyle = .popover
+            picker.popoverPresentationController?.sourceView = view
+            picker.popoverPresentationController?.sourceRect = .zero
+        }
+        
         self.present(picker, animated: true, completion: nil)
     }
 
@@ -963,12 +971,14 @@ extension TLPhotosPickerViewController: UICollectionViewDelegate,UICollectionVie
             selectCameraCell(cell)
             return
         }
-      
+
+        guard let max = self.configure.maxSelectedAssets, max < self.selectedAssets.count else { return }
+    
         toggleSelection(for: cell, at: indexPath)
         updateTitleWithCount()
     }
-
-    open func collectionView(_ collectionView: UICollectionView, didDeselectItemAt indexPath: IndexPath) {
+    
+        open func collectionView(_ collectionView: UICollectionView, didDeselectItemAt indexPath: IndexPath) {
         guard let collection = self.focusedCollection, let cell = self.collectionView.cellForItem(at: indexPath) as? TLPhotoCollectionViewCell else { return }
         
         toggleSelection(for: cell, at: indexPath)
@@ -1303,7 +1313,6 @@ extension TLPhotosPickerViewController {
             if playRequestID?.indexPath == indexPath {
                 stopPlay()
             }
-
         } else {
         //select
             logDelegate?.selectedPhoto(picker: self, at: indexPath.row)
