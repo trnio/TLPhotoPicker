@@ -444,7 +444,7 @@ extension TLPhotosPickerViewController {
         updatePresentLimitedLibraryButton()
     }
     
-        private func updateTitleWithCount() {
+    private func updateTitleWithCount() {
         if let title = self.focusedCollection?.title {
             let count = selectedAssets.count
             if count > 0 {
@@ -972,14 +972,17 @@ extension TLPhotosPickerViewController: UICollectionViewDelegate,UICollectionVie
             return
         }
 
-        guard let max = self.configure.maxSelectedAssets, max < self.selectedAssets.count else { return }
+        guard let max = self.configure.maxSelectedAssets, max > self.selectedAssets.count else {
+            self.collectionView.deselectItem(at: indexPath, animated: false)
+            return
+        }
     
         toggleSelection(for: cell, at: indexPath)
         updateTitleWithCount()
     }
     
-        open func collectionView(_ collectionView: UICollectionView, didDeselectItemAt indexPath: IndexPath) {
-        guard let collection = self.focusedCollection, let cell = self.collectionView.cellForItem(at: indexPath) as? TLPhotoCollectionViewCell else { return }
+    open func collectionView(_ collectionView: UICollectionView, didDeselectItemAt indexPath: IndexPath) {
+        guard let cell = self.collectionView.cellForItem(at: indexPath) as? TLPhotoCollectionViewCell else { return }
         
         toggleSelection(for: cell, at: indexPath)
         updateTitleWithCount()
